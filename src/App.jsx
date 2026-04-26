@@ -14,7 +14,7 @@ import {
   FaAward,
   FaBookOpen
 } from 'react-icons/fa';
-import Starfield from './components/Starfield';
+import Wormhole from './components/Wormhole';
 
 const App = () => {
   const { scrollYProgress } = useScroll();
@@ -26,7 +26,7 @@ const App = () => {
 
   return (
     <div className="app-wrapper">
-      <Starfield />
+      <Wormhole />
       
       {/* Progress Bar */}
       <motion.div className="progress-bar" style={{ scaleX }} />
