@@ -119,9 +119,36 @@ const WormholeShader = () => {
           varying vec2 vUv;
           varying float vZ;
 
-          // Simple noise function
-          float noise(vec2 p) {
-            return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+          #define PI 3.14159265359
+
+          // 3D Random Hash
+          float hash(vec3 p) {
+              return fract(sin(dot(p, vec3(12.9898, 78.233, 45.164))) * 43758.5453123);
+          }
+
+          // 3D Value Noise
+          float noise3D(vec3 x) {
+              vec3 p = floor(x);
+              vec3 f = fract(x);
+              f = f * f * (3.0 - 2.0 * f); // smoothstep
+              
+              return mix(
+                  mix(mix(hash(p + vec3(0,0,0)), hash(p + vec3(1,0,0)), f.x),
+                      mix(hash(p + vec3(0,1,0)), hash(p + vec3(1,1,0)), f.x), f.y),
+                  mix(mix(hash(p + vec3(0,0,1)), hash(p + vec3(1,0,1)), f.x),
+                      mix(hash(p + vec3(0,1,1)), hash(p + vec3(1,1,1)), f.x), f.y), f.z);
+          }
+
+          // Fractional Brownian Motion for smoke texture
+          float fbm(vec3 p) {
+              float f = 0.0;
+              float w = 0.5;
+              for(int i = 0; i < 5; i++) {
+                  f += w * noise3D(p);
+                  p *= 2.0;
+                  w *= 0.5;
+              }
+              return f;
           }
 
           void main() {
@@ -130,25 +157,28 @@ const WormholeShader = () => {
             vec2 uv = vUv;
             uv.y += time; // Move forward/backward based on scroll
             
-            // Nebula Cloud logic (multiple layers)
-            float pattern = sin(uv.x * 6.28 + sin(uv.y * 3.0 + time)) * 0.5 + 0.5;
-            float pattern2 = cos(uv.x * 3.14 - cos(uv.y * 2.0 - time * 0.5)) * 0.5 + 0.5;
+            // Map 2D UV to 3D Cylinder to avoid seams
+            vec3 p3 = vec3(cos(uv.x * PI * 2.0), sin(uv.x * PI * 2.0), uv.y);
             
-            // High-end Nebula colors
-            vec3 color = mix(uColor1, uColor2, pattern);
-            color = mix(color, uColor3, pattern2 * 0.6);
+            // Generate Volumetric Smoke
+            float smoke1 = fbm(p3 * 2.0 + vec3(0.0, 0.0, time * 0.5));
+            float smoke2 = fbm(p3 * 3.5 - vec3(time * 0.2, time * 0.3, 0.0));
             
-            // Atmospheric glow based on noise
-            float glow = pow(pattern * pattern2, 1.5) * 2.0;
-            color *= glow + 0.5;
+            // Mix colors based on smoke density
+            vec3 color = mix(uColor1, uColor2, smoke1);
+            color = mix(color, uColor3, smoke2);
+            
+            // Add volumetric glow
+            float glow = pow(smoke1 * smoke2, 1.5) * 3.0;
+            color *= glow + 0.3; // Base ambient light
             
             // Warp speed light streaks (seamless around cylinder)
-            float streakNoise = sin(uv.x * 31.4) * sin(uv.y * 5.0 + time * 3.0); // 31.4 = 5 * 2 * PI
+            float streakNoise = sin(uv.x * PI * 10.0) * sin(uv.y * 5.0 + time * 3.0);
             float streaks = smoothstep(0.8, 1.0, streakNoise) * 0.5;
-            color += streaks * uColor1;
+            color += streaks * mix(uColor1, vec3(1.0), 0.5);
 
-            // Deep space stars
-            float stars = pow(fract(sin(dot(uv * 50.0, vec2(12.9898, 78.233))) * 43758.5453), 20.0) * 1.5;
+            // Deep space stars (seamless)
+            float stars = pow(fract(sin(dot(p3 * 50.0, vec3(12.9898, 78.233, 45.164))) * 43758.5453), 20.0) * 1.5;
             color += stars;
 
             gl_FragColor = vec4(color, 1.0);
