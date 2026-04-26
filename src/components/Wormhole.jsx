@@ -96,18 +96,19 @@ const WormholeShader = () => {
 
   return (
     <mesh ref={meshRef} position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
-      <cylinderGeometry args={[5, 5, 200, 64, 100, true]} />
+      <cylinderGeometry args={[7, 7, 200, 64, 100, true]} />
       <shaderMaterial
         side={THREE.BackSide}
         transparent={true}
         uniforms={uniforms}
         vertexShader={`
           varying vec2 vUv;
-          varying float vZ;
+          varying float vDepth;
           void main() {
             vUv = uv;
-            vZ = position.z;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+            vDepth = -mvPosition.z;
+            gl_Position = projectionMatrix * mvPosition;
           }
         `}
         fragmentShader={`
@@ -117,7 +118,7 @@ const WormholeShader = () => {
           uniform vec3 uColor2;
           uniform vec3 uColor3;
           varying vec2 vUv;
-          varying float vZ;
+          varying float vDepth;
 
           #define PI 3.14159265359
 
@@ -177,10 +178,14 @@ const WormholeShader = () => {
             float streaks = smoothstep(0.85, 1.0, streakNoise) * 0.4;
             color += streaks * mix(uColor1, vec3(1.0), 0.7);
 
-            // Dynamic Alpha: Dark regions become transparent to reveal true 3D stars behind the tunnel
-            float alpha = smoothstep(0.0, 0.5, glow + streaks + 0.1);
-
-            gl_FragColor = vec4(color, alpha);
+            // Dynamic Alpha: Dark regions become transparent
+            float baseAlpha = smoothstep(0.0, 0.5, glow + streaks + 0.1);
+            
+            // Depth Fade: Soften the border of the black hole and make it bigger
+            // Fades alpha to 0 as distance increases from 20 to 80 units
+            float depthFade = 1.0 - smoothstep(20.0, 80.0, vDepth);
+            
+            gl_FragColor = vec4(color, baseAlpha * depthFade);
           }
         `}
       />
