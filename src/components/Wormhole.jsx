@@ -170,18 +170,17 @@ const WormholeShader = () => {
             
             // Add volumetric glow
             float glow = pow(smoke1 * smoke2, 1.5) * 3.0;
-            color *= glow + 0.3; // Base ambient light
+            color *= glow + 0.1; // Darker ambient base for deep space
             
             // Warp speed light streaks (seamless around cylinder)
-            float streakNoise = sin(uv.x * PI * 10.0) * sin(uv.y * 5.0 + time * 3.0);
-            float streaks = smoothstep(0.8, 1.0, streakNoise) * 0.5;
-            color += streaks * mix(uColor1, vec3(1.0), 0.5);
+            float streakNoise = sin(uv.x * PI * 8.0) * sin(uv.y * 3.0 + time * 5.0);
+            float streaks = smoothstep(0.85, 1.0, streakNoise) * 0.4;
+            color += streaks * mix(uColor1, vec3(1.0), 0.7);
 
-            // Deep space stars (seamless)
-            float stars = pow(fract(sin(dot(p3 * 50.0, vec3(12.9898, 78.233, 45.164))) * 43758.5453), 20.0) * 1.5;
-            color += stars;
+            // Dynamic Alpha: Dark regions become transparent to reveal true 3D stars behind the tunnel
+            float alpha = smoothstep(0.0, 0.5, glow + streaks + 0.1);
 
-            gl_FragColor = vec4(color, 1.0);
+            gl_FragColor = vec4(color, alpha);
           }
         `}
       />
