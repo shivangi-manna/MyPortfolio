@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { 
-  Github, 
-  Linkedin, 
-  Mail, 
-  Code2, 
-  Cpu, 
-  Database, 
-  ExternalLink, 
-  Terminal,
-  ChevronDown,
-  MapPin,
-  Award,
-  BookOpen
-} from 'lucide-react';
+  FaGithub, 
+  FaLinkedin, 
+  FaTerminal,
+  FaCpu,
+  FaDatabase,
+  FaCode,
+  FaChevronDown,
+  FaMapMarkerAlt,
+  FaExternalLinkAlt,
+  FaEnvelope,
+  FaAward,
+  FaBookOpen
+} from 'react-icons/fa';
 import Starfield from './components/Starfield';
 
 const App = () => {
@@ -66,7 +66,7 @@ const App = () => {
           </motion.div>
         </div>
         <div className="scroll-indicator">
-          <ChevronDown size={32} />
+          <FaChevronDown size={32} />
         </div>
       </section>
 
@@ -102,7 +102,7 @@ const App = () => {
               whileInView={{ opacity: 1, x: 0 }}
               className="about-visual glass-panel"
             >
-              <Terminal size={120} color="var(--accent-primary)" />
+              <FaTerminal size={120} color="var(--accent-primary)" />
               <div className="visual-glow"></div>
             </motion.div>
           </div>
@@ -115,17 +115,17 @@ const App = () => {
           <h2 className="section-title">Technical Arsenal</h2>
           <div className="skills-grid">
             {[
-              { title: "Languages", icon: <Code2 />, tags: ["Python", "C++", "SQL", "HTML5", "CSS3"] },
-              { title: "AI / ML", icon: <Cpu />, tags: ["CNN", "TensorFlow", "Keras", "Transfer Learning", "Scikit-Learn"] },
-              { title: "Data & Core", icon: <Database />, tags: ["MySQL", "DBMS", "DSA", "OOPs", "Computer Networks"] },
-              { title: "Tools", icon: <Terminal />, tags: ["VS Code", "Git", "Google Cloud", "OpenCV"] }
+              { title: "Languages", icon: <FaCode />, tags: ["Python", "C++", "SQL", "HTML5", "CSS3"] },
+              { title: "AI / ML", icon: <FaCpu />, tags: ["CNN", "TensorFlow", "Keras", "Transfer Learning", "Scikit-Learn"] },
+              { title: "Data & Core", icon: <FaDatabase />, tags: ["MySQL", "DBMS", "DSA", "OOPs", "Computer Networks"] },
+              { title: "Tools", icon: <FaTerminal />, tags: ["VS Code", "Git", "Google Cloud", "OpenCV"] }
             ].map((skill, idx) => (
               <motion.div 
                 key={idx}
                 whileHover={{ y: -10 }}
                 className="skill-card glass-panel"
               >
-                <div className="skill-icon">{skill.icon}</div>
+                <div className="skill-icon" style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'var(--accent-secondary)' }}>{skill.icon}</div>
                 <h3>{skill.title}</h3>
                 <div className="skill-tags">
                   {skill.tags.map(tag => <span key={tag}>{tag}</span>)}
@@ -141,10 +141,10 @@ const App = () => {
         <div className="container">
           <h2 className="section-title">Featured Projects</h2>
           <div className="projects-grid">
-            <motion.div className="project-card glass-panel">
+            <motion.div className="project-card glass-panel" whileHover={{ y: -10 }}>
               <div className="project-header">
                 <h3>Skin Disease Detection</h3>
-                <ExternalLink size={20} />
+                <FaExternalLinkAlt size={20} />
               </div>
               <p>CNN-based deep learning model for classifying skin images with 97.6% precision. Implemented Transfer Learning for optimized performance.</p>
               <div className="project-tags">
@@ -153,10 +153,10 @@ const App = () => {
                 <span>Python</span>
               </div>
             </motion.div>
-            <motion.div className="project-card glass-panel">
+            <motion.div className="project-card glass-panel" whileHover={{ y: -10 }}>
               <div className="project-header">
                 <h3>Snap Specs</h3>
-                <Github size={20} />
+                <FaGithub size={20} />
               </div>
               <p>Visual product identifier using computer vision to find similar items. Seamless frontend-backend integration.</p>
               <div className="project-tags">
@@ -177,15 +177,15 @@ const App = () => {
             <p>I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.</p>
             <div className="contact-links">
               <a href="mailto:shivangimanna.99@gmail.com" className="contact-item">
-                <Mail />
+                <FaEnvelope />
                 <span>shivangimanna.99@gmail.com</span>
               </a>
               <a href="https://linkedin.com/in/shivangimanna" target="_blank" className="contact-item">
-                <Linkedin />
+                <FaLinkedin />
                 <span>linkedin.com/in/shivangimanna</span>
               </a>
               <div className="contact-item">
-                <MapPin />
+                <FaMapMarkerAlt />
                 <span>Kanpur, India</span>
               </div>
             </div>
