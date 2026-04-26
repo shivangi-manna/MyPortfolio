@@ -4,7 +4,7 @@ import {
   FaGithub, 
   FaLinkedin, 
   FaTerminal,
-  FaCpu,
+  FaMicrochip,
   FaDatabase,
   FaCode,
   FaChevronDown,
@@ -116,7 +116,7 @@ const App = () => {
           <div className="skills-grid">
             {[
               { title: "Languages", icon: <FaCode />, tags: ["Python", "C++", "SQL", "HTML5", "CSS3"] },
-              { title: "AI / ML", icon: <FaCpu />, tags: ["CNN", "TensorFlow", "Keras", "Transfer Learning", "Scikit-Learn"] },
+              { title: "AI / ML", icon: <FaMicrochip />, tags: ["CNN", "TensorFlow", "Keras", "Transfer Learning", "Scikit-Learn"] },
               { title: "Data & Core", icon: <FaDatabase />, tags: ["MySQL", "DBMS", "DSA", "OOPs", "Computer Networks"] },
               { title: "Tools", icon: <FaTerminal />, tags: ["VS Code", "Git", "Google Cloud", "OpenCV"] }
             ].map((skill, idx) => (
