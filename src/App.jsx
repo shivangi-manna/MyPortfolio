@@ -12,17 +12,23 @@ import {
   FaExternalLinkAlt,
   FaEnvelope,
   FaAward,
-  FaBookOpen
+  FaBookOpen,
+  FaBars,
+  FaTimes
 } from 'react-icons/fa';
 import Wormhole from './components/Wormhole';
 
 const App = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <div className="app-wrapper">
@@ -38,11 +44,16 @@ const App = () => {
             <div className="logo-icon">SM</div>
             <span>Shivangi Manna</span>
           </div>
-          <div className="nav-links">
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+
+          <button className="mobile-menu-toggle" onClick={toggleMenu}>
+            {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          </button>
+
+          <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+            <a href="#about" onClick={closeMenu}>About</a>
+            <a href="#skills" onClick={closeMenu}>Skills</a>
+            <a href="#projects" onClick={closeMenu}>Projects</a>
+            <a href="#contact" onClick={closeMenu}>Contact</a>
           </div>
         </div>
       </nav>

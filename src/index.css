@@ -145,6 +145,15 @@ h1, h2, h3 {
 .nav-links a:hover {
   color: var(--accent-primary);
 }
+
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  z-index: 1001;
+}
 .hero {
   text-align: center;
   padding-top: 12rem;
@@ -211,6 +220,13 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+@media (max-width: 768px) {
+  .about-visual svg {
+    width: 80px;
+    height: 80px;
+  }
 }
 .visual-glow {
   position: absolute;
@@ -341,8 +357,102 @@ footer {
   color: var(--text-muted);
   border-top: 1px solid var(--border-glass);
 }
+@media (max-width: 1024px) {
+  .section-title { font-size: 2.8rem; }
+  .hero h1 { font-size: 4rem; }
+  .container { padding: 0 1.5rem; }
+}
+
 @media (max-width: 768px) {
-  .hero h1 { font-size: 3rem; }
-  .about-grid { grid-template-columns: 1fr; }
-  .hero-content { padding: 0 1rem; }
+  .scroll-indicator { display: none; }
+  section { padding: 4rem 0; min-height: auto; }
+  
+  .navbar {
+    width: calc(100% - 2rem);
+    padding: 0.8rem 1.2rem;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    background: rgba(5, 5, 10, 0.95);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: var(--transition-smooth);
+    z-index: 1000;
+  }
+
+  .nav-links.active {
+    right: 0;
+  }
+
+  .nav-links a {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .hero { padding-top: 10rem; }
+  .hero h1 { font-size: 2.8rem; }
+  .hero p { font-size: 1rem; }
+  
+  .about-grid { 
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .about-text, .about-visual {
+    padding: 2rem 1.5rem;
+  }
+
+  .about-visual {
+    order: -1;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-card {
+    padding: 3rem 1.5rem;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .cta-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 2.2rem; }
+  .navbar { top: 1rem; }
+  .logo span { display: none; }
 }
