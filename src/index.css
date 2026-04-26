@@ -60,73 +60,6 @@ body {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Utilities */
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.justify-between { justify-content: space-between; }
-.justify-center { justify-content: center; }
-.items-center { align-items: center; }
-.gap-2 { gap: 0.5rem; }
-.gap-4 { gap: 1rem; }
-.gap-6 { gap: 1.5rem; }
-.gap-8 { gap: 2rem; }
-.gap-12 { gap: 3rem; }
-
-.grid { display: grid; }
-.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
-@media (min-width: 768px) {
-  .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (min-width: 1024px) {
-  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
-
-.fixed { position: fixed; }
-.relative { position: relative; }
-.absolute { position: absolute; }
-.top-0 { top: 0; }
-.left-0 { left: 0; }
-.w-full { width: 100%; }
-.z-50 { z-index: 50; }
-.z-10 { z-index: 10; }
-
-.p-4 { padding: 1rem; }
-.p-8 { padding: 2rem; }
-.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
-.py-10 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
-.mb-4 { margin-bottom: 1rem; }
-.mb-6 { margin-bottom: 1.5rem; }
-.mb-8 { margin-bottom: 2rem; }
-.mb-10 { margin-bottom: 2.5rem; }
-.mt-auto { margin-top: auto; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-
-.text-center { text-align: center; }
-.text-sm { font-size: 0.875rem; }
-.text-xl { font-size: 1.25rem; }
-.text-2xl { font-size: 1.5rem; }
-.text-4xl { font-size: 2.25rem; }
-.text-6xl { font-size: 3.75rem; }
-.text-8xl { font-size: 6rem; }
-.font-bold { font-weight: 700; }
-.font-black { font-weight: 900; }
-
-.bg-black\/50 { background-color: rgba(0, 0, 0, 0.5); }
-.bg-black\/30 { background-color: rgba(0, 0, 0, 0.3); }
-.bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
-.backdrop-blur-md { backdrop-filter: blur(12px); }
-.border-b { border-bottom: 1px solid var(--border-glass); }
-.border-white\/5 { border-color: rgba(255, 255, 255, 0.05); }
-
-.rounded-lg { border-radius: 0.5rem; }
-.rounded-xl { border-radius: 0.75rem; }
-.rounded-full { border-radius: 9999px; }
-
-.transition-all { transition: all 0.3s ease; }
-.duration-300 { transition-duration: 300ms; }
-
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -142,13 +75,17 @@ section {
   position: relative;
 }
 
+h1, h2, h3 {
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
 .section-title {
   font-size: 3.5rem;
   margin-bottom: 4rem;
   background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 800;
 }
 
 /* Starfield Overlay for Time Travel Feel */
