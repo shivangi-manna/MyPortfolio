@@ -82,9 +82,9 @@ const WormholeShader = () => {
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
     uScroll: { value: 0 },
-    uColor1: { value: new THREE.Color('#00d2ff') },
-    uColor2: { value: new THREE.Color('#9d4edd') },
-    uColor3: { value: new THREE.Color('#ff0055') }
+    uColor1: { value: new THREE.Color('#0044ff') }, // Deep Blue
+    uColor2: { value: new THREE.Color('#ff0044') }, // Red/Pink
+    uColor3: { value: new THREE.Color('#7700ff') }  // Purple
   }), []);
 
   useFrame((state) => {
@@ -95,8 +95,8 @@ const WormholeShader = () => {
   });
 
   return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      <cylinderGeometry args={[5, 5, 100, 64, 100, true]} />
+    <mesh ref={meshRef} position={[0, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+      <cylinderGeometry args={[5, 5, 200, 64, 100, true]} />
       <shaderMaterial
         side={THREE.BackSide}
         transparent={true}
@@ -138,12 +138,13 @@ const WormholeShader = () => {
             vec3 color = mix(uColor1, uColor2, pattern);
             color = mix(color, uColor3, pattern2 * 0.6);
             
-            // Atmospheric glow & edge darkness for tunnel depth
-            float glow = pow(0.8 - abs(vUv.x - 0.5) * 2.0, 3.0);
-            color *= glow + 0.2;
+            // Atmospheric glow based on noise
+            float glow = pow(pattern * pattern2, 1.5) * 2.0;
+            color *= glow + 0.5;
             
-            // Warp speed light streaks
-            float streaks = step(0.98, fract(uv.x * 10.0 + uv.y * 2.0 + time * 2.0)) * 0.3;
+            // Warp speed light streaks (seamless around cylinder)
+            float streakNoise = sin(uv.x * 31.4) * sin(uv.y * 5.0 + time * 3.0); // 31.4 = 5 * 2 * PI
+            float streaks = smoothstep(0.8, 1.0, streakNoise) * 0.5;
             color += streaks * uColor1;
 
             // Deep space stars
@@ -162,9 +163,11 @@ const Wormhole = () => {
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1 }}>
       <Canvas>
-        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={75} />
+        <color attach="background" args={['#020205']} />
+        <fog attach="fog" args={['#020205', 10, 80]} />
+        <PerspectiveCamera makeDefault position={[0, 0, 50]} fov={75} />
         <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
+        <pointLight position={[0, 0, 50]} />
         
         <WormholeShader />
         
